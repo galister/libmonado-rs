@@ -102,7 +102,6 @@ pub type MndRootPtr = *mut c_void;
 #[derive(WrapperApi)]
 pub struct MonadoApi {
 	// === API version 1.0 ===
-
 	/// Get the API version (not Monado itself).
 	mnd_api_get_version:
 		unsafe extern "C" fn(out_major: *mut u32, out_minor: *mut u32, out_patch: *mut u32),
@@ -154,14 +153,10 @@ pub struct MonadoApi {
 	) -> MndResult,
 
 	// === API version 1.1 ===
-
 	/// Trigger a recenter of the local spaces. Since API version 1.1.
-	mnd_root_recenter_local_spaces: Option<
-		unsafe extern "C" fn(root: MndRootPtr) -> MndResult,
-	>,
+	mnd_root_recenter_local_spaces: Option<unsafe extern "C" fn(root: MndRootPtr) -> MndResult>,
 
 	// === API version 1.2 ===
-
 	/// Get boolean property for a device. Since API version 1.2.
 	mnd_root_get_device_info_bool: Option<
 		unsafe extern "C" fn(
@@ -209,7 +204,6 @@ pub struct MonadoApi {
 	>,
 
 	// === API version 1.3 ===
-
 	/// Get the current offset of a reference space. Since API version 1.3.
 	mnd_root_get_reference_space_offset: Option<
 		unsafe extern "C" fn(
@@ -239,9 +233,8 @@ pub struct MonadoApi {
 		unsafe extern "C" fn(root: MndRootPtr, origin_id: u32, offset: *const MndPose) -> MndResult,
 	>,
 	/// Get the number of tracking origins. Since API version 1.3.
-	mnd_root_get_tracking_origin_count: Option<
-		unsafe extern "C" fn(root: MndRootPtr, out_track_count: *mut u32) -> MndResult,
-	>,
+	mnd_root_get_tracking_origin_count:
+		Option<unsafe extern "C" fn(root: MndRootPtr, out_track_count: *mut u32) -> MndResult>,
 	/// Get the name of a tracking origin. Since API version 1.3.
 	mnd_root_get_tracking_origin_name: Option<
 		unsafe extern "C" fn(
@@ -252,7 +245,6 @@ pub struct MonadoApi {
 	>,
 
 	// === API version 1.4 ===
-
 	/// Get battery status of a device. Since API version 1.4.
 	mnd_root_get_device_battery_status: Option<
 		unsafe extern "C" fn(
@@ -265,7 +257,6 @@ pub struct MonadoApi {
 	>,
 
 	// === API version 1.5 ===
-
 	/// Get current brightness of a display device. Since API version 1.5.
 	mnd_root_get_device_brightness: Option<
 		unsafe extern "C" fn(
@@ -285,15 +276,14 @@ pub struct MonadoApi {
 	>,
 
 	// === API version 1.6 ===
-
 	/// Block certain types of IO for a client. Since API version 1.6.
 	mnd_root_set_client_io_blocks: Option<
 		unsafe extern "C" fn(root: MndRootPtr, client_id: u32, block_flags: u32) -> MndResult,
 	>,
-	
+
 	/// Set chroma key params for any base application opaque projection layer. Since API version 1.6.
 	mnd_root_set_chroma_key_params: Option<
-    	unsafe extern "C" fn(
+		unsafe extern "C" fn(
 			root: MndRootPtr,
 			min: MndColorHsv,
 			max: MndColorHsv,
@@ -301,4 +291,6 @@ pub struct MonadoApi {
 			despill: f32,
 		) -> MndResult,
 	>,
+	mnd_root_push_metrics_fd:
+		Option<unsafe extern "C" fn(root: MndRootPtr, fd: i32, early_flush: bool) -> MndResult>,
 }

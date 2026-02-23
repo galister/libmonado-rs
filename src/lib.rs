@@ -17,6 +17,7 @@ use std::ffi::*;
 use std::fmt::Debug;
 use std::fs;
 use std::ops::Range;
+use std::os::fd::AsRawFd;
 use std::path::Path;
 use std::path::PathBuf;
 use std::ptr;
@@ -232,6 +233,19 @@ impl Monado {
 		unsafe {
 			self.api
 				.mnd_root_recenter_local_spaces(self.root)
+				.ok_or(MndResult::ErrorInvalidVersion)?
+				.to_result()
+		}
+	}
+
+	pub fn push_metrics_fd(
+		&self,
+		fd: std::os::fd::BorrowedFd,
+		early_flush: bool,
+	) -> Result<(), MndResult> {
+		unsafe {
+			self.api
+				.mnd_root_push_metrics_fd(self.root, fd.as_raw_fd(), early_flush)
 				.ok_or(MndResult::ErrorInvalidVersion)?
 				.to_result()
 		}
